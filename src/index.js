@@ -13,11 +13,12 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = { videos: [], selectedVideo: null };
+    this.videosSearch('surfboards')
   }
   render() {
     return (<div>
       <p>Search Here</p>
-      <SearchBar/>
+      <SearchBar onSearchTermChange={term => this.videosSearch(term)}/>
       <VideoDetail video={this.state.selectedVideo}/>
       <VideoList
         onVideoSelect={ (selectedVideo) => this.setState({selectedVideo}) }
@@ -26,10 +27,9 @@ class App extends Component {
     </div>);
   }
 
-  componentDidMount(){
-    YTSearch({key: API_KEY, term: 'surfboard'}, (videos) => {
+  videosSearch(term) {
+    YTSearch({key: API_KEY, term: term}, (videos) => {
       this.setState( { videos: videos, selectedVideo: videos[0] } );
-      // console.log(this.state.videos)
     })
   }
 
